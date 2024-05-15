@@ -279,6 +279,6 @@ def main(source, ticks_file):
 
 
 if __name__ == "__main__":
-    assert len(sys.argv) == 3, "Wrong arguments: translator.py <input_file> <target_file>"
+    assert len(sys.argv) == 3, "Wrong arguments: machine.py <input_file> <target_file>"
     main(sys.argv[1], sys.argv[2])
 
