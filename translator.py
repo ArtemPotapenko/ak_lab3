@@ -26,7 +26,7 @@ START_CODE_ADDRESS: int = 4096
 
 current_variable_address = START_VARIABLE_ADDRESS
 current_code_address = START_CODE_ADDRESS
-variables: dict = {}
+variables: dict[str, Variable] = {}
 
 free_registers: list = [Register.R6, Register.R5, Register.R4, Register.R3, Register.R2, Register.R1]
 
@@ -49,13 +49,14 @@ def add_code(split_arr: list, op: Opcode) -> Union[Register, str]:
     else:
         mem_to = Register.DX
     first = to_register(split_arr[0], 1)
-    second = to_register(split_arr[1] ,2)
+    second = to_register(split_arr[1], 2)
     code.append(
         Instruction(op, current_code_address, first, second, mem_to))
     current_code_address += 1
     if mem_to == Register.DX:
-        code.append(Instruction(Opcode.ST, current_code_address, "#" + str(current_variable_address)))
-        current_variable_address += 1
+        mem_to = "#" + str(current_variable_address)
+        code.append(Instruction(Opcode.ST, current_code_address, Register.DX, "#" + str(current_variable_address)))
+        current_code_address += 1
         current_variable_address = current_variable_address + 1
     last_result = mem_to
     return mem_to
@@ -64,19 +65,19 @@ def add_code(split_arr: list, op: Opcode) -> Union[Register, str]:
 def to_register(s: str, number: int) -> Union[Register, str]:
     global current_variable_address, current_code_address, code
     if s[0] == "#":
-        register = Register.BX if number == 1 else Register.BX if number == 2 else Register.DX
-        code.append(Instruction(Opcode.LD, s, register))
+        register = Register.BX if number == 1 else Register.CX if number == 2 else Register.DX
+        code.append(Instruction(Opcode.LD, current_code_address,s, register))
         current_code_address += 1
         return register
     elif is_number(s[0]):
         return s
     if s in variables:
-        register = Register.BX if number == 1 else Register.BX if number == 2 else Register.DX
+        register = Register.BX if number == 1 else Register.CX if number == 2 else Register.DX
         code.append(
             Instruction(Opcode.LD, current_code_address, "#" + str(variables[s].value), register))
         current_code_address += 1
         return register
-    if s is Register:
+    if s in Register:
         return Register(s)
 
 
@@ -95,7 +96,9 @@ def arithmetic(arith_str: str):
     global current_variable_address, last_result, current_code_address, code
     if "read" in arith_str:
         last_result = free_registers[-1]
-        return [Instruction(Opcode.READ, free_registers[-1])]
+        code.append(Instruction(Opcode.READ, current_code_address, free_registers[-1]))
+        current_code_address += 1
+        return code
     start: int = -1
     count_s: int = 0
     i = 0
@@ -148,11 +151,13 @@ def arithmetic(arith_str: str):
         if len(free_registers) > 0:
             mem_to = free_registers[-1]
             free_registers.pop()
+            code.append(
+                Instruction(Opcode.LD, current_code_address, arith_str, mem_to))
         else:
             mem_to = "#" + str(current_variable_address)
             current_variable_address = current_variable_address + 1
-        code.append(
-            Instruction(Opcode.MOV, current_code_address, arith_str, mem_to))
+            code.append(
+                Instruction(Opcode.ST, current_code_address, arith_str, mem_to))
         current_code_address += 1
         last_result = mem_to
     elif arith_str in variables:
@@ -224,15 +229,16 @@ def translate(source: str) -> list[Instruction]:
                     search = ""
                     count_skob = 0
                     code.append(Instruction(Opcode.INC, current_code_address, "#" + str(for_max)))
-                    code.append(Instruction(Opcode.JMP, current_code_address + 1, for_start))
+                    code.append(Instruction(Opcode.JMP, current_code_address + 1, for_start - 1))
                     current_code_address += 2
-                    code[for_start - START_CODE_ADDRESS] = Instruction(Opcode.JNL, for_start,
+                    code[for_start - START_CODE_ADDRESS + 1] = Instruction(Opcode.JNL, for_start + 1,
                                                                        current_code_address)
 
             if "{" in code_str:
                 count_skob += code_str.count("{")
             if count_skob == 0:
                 code_str = code_str.split("}")[1].strip()
+                search = ""
             else:
                 continue
         if search == "if":
@@ -248,18 +254,26 @@ def translate(source: str) -> list[Instruction]:
                 count_skob += code_str.count("{")
             if count_skob == 0:
                 code_str = code_str.split("}", 1)[1].strip()
+                search = ""
             else:
                 continue
         if code_str[:6] == "print(":
             if '"' in code_str:
                 s = code_str.split('"', 2)[1]
-                code.append(Instruction(Opcode.LD, "#" + str(current_variable_address), Register.R1))
+                code.append(
+                    Instruction(Opcode.LD, current_code_address, "#" + str(current_variable_address), Register.R1))
                 current_code_address += 1
                 for x in s:
                     variable_const[current_variable_address] = x
                     current_variable_address += 1
                 variable_const[current_variable_address] = '\0'
                 current_variable_address += 1
+            elif code_str.split("(", 2)[1].split(")", 1)[0].strip() in variables:
+                var: Variable = variables[code_str.split("(", 2)[1].split(")", 1)[0].strip()]
+                if var.type_value == Type.number:
+                    arithmetic(code_str[6:-1])
+                    code.append(Instruction(Opcode.PRINT, current_code_address, last_result))
+                    current_code_address += 1
             else:
                 arithmetic(code_str[6:-1])
                 code.append(Instruction(Opcode.PRINT, current_code_address, last_result))
@@ -301,13 +315,14 @@ def translate(source: str) -> list[Instruction]:
                     current_variable_address += 1
                 second = to_register(args[1], 2)
                 code.append(Instruction(Opcode.ST, current_code_address, second, "#" + str(variables[args[0]].value)))
+                for_max = variables[args[0]].value
                 current_code_address += 1
                 first = to_register(args[0], 1)
                 third = to_register(args[2], 3)
+                for_start = current_code_address
                 code.append(
                     Instruction(Opcode.CMP, current_code_address, first, third))
                 current_code_address += 1
-                for_start = current_code_address
                 code.append(None)
                 current_code_address += 1
                 search = "for"
@@ -339,7 +354,7 @@ def translate(source: str) -> list[Instruction]:
                         current_code_address += 1
                         ok = True
             assert ok, "Compile exception"
-        if code_str.strip() == "new_line()":
+        elif code_str.strip() == "new_line()":
             code.append(Instruction(Opcode.PRINT, current_code_address, '\n'))
             current_code_address += 1
         else:
@@ -366,17 +381,16 @@ def translate(source: str) -> list[Instruction]:
 
 
 def main(source: str, target: str):
-    with open("input.txt", encoding="utf-8") as f:
+    with open(source, encoding="utf-8") as f:
         source = f.read()
     translate(source)
     code.append(Instruction(Opcode.HLT, current_code_address))
     for x in variable_const:
         code.append(Instruction(Opcode.WORD, x, variable_const[x]))
-    write_code("output.txt", code)
+    write_code(target, code)
     print("source LoC:", len(source.split(";")), "code instr:", len(code))
 
 
 if __name__ == "__main__":
-    #    assert len(sys.argv) == 3, "Wrong arguments: translator.py <input_file> <target_file>"
-    #   main(sys.argv[1], sys.argv[2])
-    main(None, None)
+    assert len(sys.argv) == 3, "Wrong arguments: translator.py <input_file> <target_file>"
+    main(sys.argv[1], sys.argv[2])

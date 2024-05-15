@@ -33,7 +33,7 @@ class Register(str, Enum):
     DX = "dx"
 
     IP = "ip"
-    SP = "sp"
+    CR = "cr"
     DR = "dr"
 
 
@@ -66,19 +66,19 @@ class Opcode(str, Enum):
     CMP = "cmp"
 
     # memory
-    MOV = "mov"
     LD = "ld"
     ST = "st"
     WORD = "word"
 
     HLT = "hlt"
+    NOPE = "nope"
 
     def __str__(self) -> str:
         return str(self.value)
 
 
 # Инструкции машинного кода. Аргументы могут быть пустыми
-instr_agr = Union[chr,str, int, Register, None]
+instr_agr = Union[chr, str, int, Register, None]
 
 
 class Instruction:
@@ -98,8 +98,8 @@ class Instruction:
 
 
 def create_instr(json_dict: dict) -> Instruction:
-    return Instruction(Opcode(json_dict["op"]), set_from_json(json_dict["first"]),
-                       set_from_json(json_dict["second"]), set_from_json("third"))
+    return Instruction(Opcode(json_dict["opcode"]), int(json_dict["memory"]), set_from_json(json_dict["first"]),
+                       set_from_json(json_dict["second"]), set_from_json(json_dict["third"]))
 
 
 def write_code(filename: str, code: list[Instruction]):
@@ -116,12 +116,12 @@ def write_code(filename: str, code: list[Instruction]):
 def set_from_json(json_string: str | None):
     if json_string is None:
         return None
-    if is_char(json_string):
-        return json_string[1]
     if is_number(json_string):
-        return int(json_string)
+        return float(json_string)
     if is_register(json_string):
         return Register(json_string)
+    if is_char(json_string):
+        return json_string[1]
     return json_string
 
 
