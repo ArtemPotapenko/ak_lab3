@@ -1,0 +1,30 @@
+in_source: |-
+  string name = read(20);
+  print("Hello, ");
+  print(name);
+in_input: Artem
+out_output: Hello, Artem
+out_code: |-
+  [{"memory": 4096, "opcode": "ld", "first": 101, "second": "dx", "third": null},
+ {"memory": 4097, "opcode": "read", "first": "r1", "second": null, "third": null},
+ {"memory": 4098, "opcode": "st", "first": "r1", "second": "dx", "third": null},
+ {"memory": 4099, "opcode": "cmp", "first": "r1", "second": 0, "third": null},
+ {"memory": 4100, "opcode": "je", "first": 4103, "second": null, "third": null},
+ {"memory": 4101, "opcode": "add", "first": "dx", "second": 1, "third": "dx"},
+ {"memory": 4102, "opcode": "jmp", "first": 4097, "second": null, "third": null},
+ {"memory": 4104, "opcode": "st", "first": 101, "second": "#100", "third": null},
+ {"memory": 4105, "opcode": "print", "first": "H", "second": null, "third": null},
+ {"memory": 4106, "opcode": "print", "first": "e", "second": null, "third": null},
+ {"memory": 4107, "opcode": "print", "first": "l", "second": null, "third": null},
+ {"memory": 4108, "opcode": "print", "first": "l", "second": null, "third": null},
+ {"memory": 4109, "opcode": "print", "first": "o", "second": null, "third": null},
+ {"memory": 4110, "opcode": "print", "first": ",", "second": null, "third": null},
+ {"memory": 4111, "opcode": "print", "first": " ", "second": null, "third": null},
+ {"memory": 4112, "opcode": "ld", "first": "#100", "second": "dx", "third": null},
+ {"memory": 4113, "opcode": "ld", "first": "dx", "second": "bx", "third": null},
+ {"memory": 4114, "opcode": "cmp", "first": "bx", "second": 0, "third": null},
+ {"memory": 4115, "opcode": "je", "first": 4119, "second": null, "third": null},
+ {"memory": 4116, "opcode": "print", "first": "bx", "second": null, "third": null},
+ {"memory": 4117, "opcode": "add", "first": "dx", "second": 1, "third": "dx"},
+ {"memory": 4118, "opcode": "jmp", "first": 4113, "second": null, "third": null},
+ {"memory": 4119, "opcode": "hlt", "first": null, "second": null, "third": null}]
