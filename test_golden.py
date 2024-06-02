@@ -28,4 +28,4 @@ def test_whole_by_golden(golden):
         with open(target, encoding="utf-8", mode="r") as file:
             code = file.read()
         assert code == golden.out["out_code"]
-        assert stdout.getvalue() == golden.out["out_output"]
+        assert stdout.getvalue() == str(golden.out["out_output"])
