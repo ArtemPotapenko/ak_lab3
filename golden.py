@@ -11,7 +11,6 @@ import translator, machine
 
 @pytest.mark.golden_test("golden/*.yml")
 def test_whole_by_golden(golden):
-
     with tempfile.TemporaryDirectory() as tmpdirname:
         source = os.path.join(tmpdirname, "program.q")
         input_stream = os.path.join(tmpdirname, "input")

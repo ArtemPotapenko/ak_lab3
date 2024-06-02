@@ -173,7 +173,7 @@ def string(s: str) -> list[Instruction]:
     if s.startswith("read(") and s[-1] == ")":
         k: int = int(s.split("(", 1)[1].split(")", 1)[0])
         last_result = current_variable_address
-        code.append(Instruction(Opcode.LD, current_code_address,  current_variable_address, Register.DX))
+        code.append(Instruction(Opcode.LD, current_code_address, current_variable_address, Register.DX))
         current_code_address += 1
         code.append(Instruction(Opcode.READ, current_code_address, Register.R1))
         current_code_address += 1

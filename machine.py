@@ -62,7 +62,6 @@ class ControlUnit:
             if self.tick == self.max_tick:
                 return
 
-
             self.registers[Register.CR] = instr[ip]
 
             self.tick()
@@ -145,7 +144,7 @@ class ControlUnit:
                     return
 
             if instr[ip].op == Opcode.CMP:
-                first = self.registers[instr[ip].first] if instr[ip].first in Register  else instr[ip].first
+                first = self.registers[instr[ip].first] if instr[ip].first in Register else instr[ip].first
                 second = self.registers[instr[ip].second] if instr[ip].second in Register else instr[ip].second
                 first = ord(first) if type(first) == str else first
                 second = ord(second) if type(second) == str else second
@@ -178,7 +177,8 @@ class ControlUnit:
 
             if instr[ip].op == Opcode.ST:
                 first = self.registers[instr[ip].first] if instr[ip].first in Register else instr[ip].first
-                second = self.registers[instr[ip].second] if instr[ip].second in Register else int(instr[ip].second[1::])
+                second = self.registers[instr[ip].second] if instr[ip].second in Register else int(
+                    instr[ip].second[1::])
                 self.registers[Register.DR] = second
 
                 self.tick()
@@ -340,4 +340,4 @@ def main(source, ticks_file, input_file):
 
 if __name__ == "__main__":
     assert len(sys.argv) == 4, "Wrong arguments: machine.py <input_file> <target_file> <input>"
-    main(sys.argv[1], sys.argv[2],sys.argv[3])
+    main(sys.argv[1], sys.argv[2], sys.argv[3])

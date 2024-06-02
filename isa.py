@@ -13,7 +13,7 @@ def is_number(arg: str) -> bool:
 
 def is_char(arg: str) -> bool:
     return type(arg) == str and len(arg) == 3 and (arg[0] == "'" or arg[0] == "\"") and (
-                arg[2] == "'" or arg[2] == "\"")
+            arg[2] == "'" or arg[2] == "\"")
 
 
 def is_register(arg: str) -> bool:
