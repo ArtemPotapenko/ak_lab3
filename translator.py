@@ -45,18 +45,26 @@ code = []
 
 
 def set_start_value():
-    global free_registers, variables, variable_const, last_result, ar_var, code, current_variable_address, current_code_address
+    global \
+        free_registers, \
+        variables, \
+        variable_const, \
+        last_result, \
+        ar_var, \
+        code, \
+        current_variable_address, \
+        current_code_address
     free_registers = [
         Register.R6,
         Register.R5,
         Register.R4,
         Register.R3,
         Register.R2,
-        Register.R1
+        Register.R1,
     ]
-    variable_const= {}
+    variable_const = {}
     last_result = None
-    ar_var= {}
+    ar_var = {}
     code = []
     current_variable_address = START_VARIABLE_ADDRESS
     current_code_address = START_CODE_ADDRESS
@@ -150,18 +158,18 @@ def arithmetic(arith_str: str):
         elif arith_str[i] == ")":
             count_s -= 1
             if count_s == 0:
-                arithmetic(arith_str[start + 1: i])
-                arith_str = arith_str[:start] + last_result + arith_str[i + 1:]
+                arithmetic(arith_str[start + 1 : i])
+                arith_str = arith_str[:start] + last_result + arith_str[i + 1 :]
                 i = start
                 start = -1
         i += 1
     while (
-            len(re.findall("[#r]?[0-9\\w.]+\\s*[*/+\\-%]\\s*[#r]?[0-9\\w.]+", arith_str))
-            > 0
+        len(re.findall("[#r]?[0-9\\w.]+\\s*[*/+\\-%]\\s*[#r]?[0-9\\w.]+", arith_str))
+        > 0
     ):
         if (
-                len(re.findall("[#r]?[0-9\\w.]+\\s*[*/%]\\s*[#r]?[0-9\\w.]+", arith_str))
-                > 0
+            len(re.findall("[#r]?[0-9\\w.]+\\s*[*/%]\\s*[#r]?[0-9\\w.]+", arith_str))
+            > 0
         ):
             arr = re.findall("[#r-]?[0-9\\w.]+\\s*[*/%]\\s*[#r]?[0-9\\w.]+", arith_str)[
                 0
@@ -784,6 +792,6 @@ def main(source: str, target: str):
 
 if __name__ == "__main__":
     assert (
-            len(sys.argv) == 3
+        len(sys.argv) == 3
     ), "Wrong arguments: translator.py <input_file> <target_file>"
     main(sys.argv[1], sys.argv[2])
