@@ -25,7 +25,7 @@ def test_whole_by_golden(golden):
         with contextlib.redirect_stdout(io.StringIO()) as stdout:
             translator.main(source, target)
             print("============================================================")
-            machine.main(target, tick,input_stream)
+            machine.main(target, tick, input_stream)
         with open(target, encoding="utf-8", mode="r") as file:
             code = file.read()
         assert code == golden.out["out_code"]

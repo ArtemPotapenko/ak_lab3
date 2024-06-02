@@ -43,6 +43,23 @@ class Register(str, Enum):
     SP = "sp"
 
 
+registers_name = [
+    "r1",
+    "r2",
+    "r3",
+    "r4",
+    "r5",
+    "r6",
+    "bx",
+    "cx",
+    "dx",
+    "ip",
+    "cr",
+    "dr",
+    "sp",
+]
+
+
 class Flags(str, Enum):
     NF = "neg flag"
     ZF = "zero flag"

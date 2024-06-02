@@ -1,6 +1,15 @@
 import sys
 
-from isa import Register, Flags, Opcode, Instruction, Union, is_number, read_code
+from isa import (
+    Register,
+    Flags,
+    Opcode,
+    Instruction,
+    Union,
+    is_number,
+    read_code,
+    registers_name,
+)
 
 memory = []
 
@@ -83,12 +92,12 @@ class ControlUnit:
             if instr[ip].op == Opcode.ADD:
                 first = (
                     self.registers[instr[ip].first]
-                    if instr[ip].first in Register
+                    if instr[ip].first in registers_name
                     else instr[ip].first
                 )
                 second = (
                     self.registers[instr[ip].second]
-                    if instr[ip].second in Register
+                    if instr[ip].second in registers_name
                     else instr[ip].second
                 )
                 self.registers[instr[ip].third] = first + second
@@ -106,12 +115,12 @@ class ControlUnit:
             if instr[ip].op == Opcode.SUB:
                 first = (
                     self.registers[instr[ip].first]
-                    if instr[ip].first in Register
+                    if instr[ip].first in registers_name
                     else instr[ip].first
                 )
                 second = (
                     self.registers[instr[ip].second]
-                    if instr[ip].second in Register
+                    if instr[ip].second in registers_name
                     else instr[ip].second
                 )
                 self.registers[instr[ip].third] = first - second
@@ -129,12 +138,12 @@ class ControlUnit:
             if instr[ip].op == Opcode.MUL:
                 first = (
                     self.registers[instr[ip].first]
-                    if instr[ip].first in Register
+                    if instr[ip].first in registers_name
                     else instr[ip].first
                 )
                 second = (
                     self.registers[instr[ip].second]
-                    if instr[ip].second in Register
+                    if instr[ip].second in registers_name
                     else instr[ip].second
                 )
                 self.registers[instr[ip].third] = first * second
@@ -152,12 +161,12 @@ class ControlUnit:
             if instr[ip].op == Opcode.DIV:
                 first = (
                     self.registers[instr[ip].first]
-                    if instr[ip].first in Register
+                    if instr[ip].first in registers_name
                     else instr[ip].first
                 )
                 second = (
                     self.registers[instr[ip].second]
-                    if instr[ip].second in Register
+                    if instr[ip].second in registers_name
                     else instr[ip].second
                 )
                 self.registers[instr[ip].third] = first // second
@@ -175,12 +184,12 @@ class ControlUnit:
             if instr[ip].op == Opcode.MOD:
                 first = (
                     self.registers[instr[ip].first]
-                    if instr[ip].first in Register
+                    if instr[ip].first in registers_name
                     else instr[ip].first
                 )
                 second = (
                     self.registers[instr[ip].second]
-                    if instr[ip].second in Register
+                    if instr[ip].second in registers_name
                     else instr[ip].second
                 )
                 self.registers[instr[ip].third] = first % second
@@ -198,12 +207,12 @@ class ControlUnit:
             if instr[ip].op == Opcode.CMP:
                 first = (
                     self.registers[instr[ip].first]
-                    if instr[ip].first in Register
+                    if instr[ip].first in registers_name
                     else instr[ip].first
                 )
                 second = (
                     self.registers[instr[ip].second]
-                    if instr[ip].second in Register
+                    if instr[ip].second in registers_name
                     else instr[ip].second
                 )
                 first = ord(first) if isinstance(first, str) else first
@@ -220,7 +229,7 @@ class ControlUnit:
                 if not (is_number(instr[ip].first)):
                     adr = (
                         int(self.registers[instr[ip].first])
-                        if instr[ip].first in Register
+                        if instr[ip].first in registers_name
                         else int(instr[ip].first[1::])
                     )
                     self.registers[Register.DR] = adr
@@ -240,12 +249,12 @@ class ControlUnit:
             if instr[ip].op == Opcode.ST:
                 first = (
                     self.registers[instr[ip].first]
-                    if instr[ip].first in Register
+                    if instr[ip].first in registers_name
                     else instr[ip].first
                 )
                 second = (
                     self.registers[instr[ip].second]
-                    if instr[ip].second in Register
+                    if instr[ip].second in registers_name
                     else int(instr[ip].second[1::])
                 )
                 self.registers[Register.DR] = second
@@ -263,7 +272,7 @@ class ControlUnit:
             if instr[ip].op == Opcode.JMP:
                 arg = (
                     self.registers[instr[ip].first]
-                    if instr[ip].first in Register
+                    if instr[ip].first in registers_name
                     else int(instr[ip].first)
                 )
                 ip = int(arg)
@@ -271,7 +280,7 @@ class ControlUnit:
             if instr[ip].op == Opcode.PRINT:
                 arg = (
                     self.registers[instr[ip].first]
-                    if instr[ip].first in Register
+                    if instr[ip].first in registers_name
                     else instr[ip].first
                     if is_number(instr[ip].first)
                     else instr[ip].first
@@ -286,7 +295,7 @@ class ControlUnit:
             if instr[ip].op == Opcode.PUSH:
                 first = (
                     self.registers[instr[ip].first]
-                    if instr[ip].first in Register
+                    if instr[ip].first in registers_name
                     else instr[ip].first
                 )
                 self.registers[Register.DR] = self.registers[Register.SP]
@@ -329,7 +338,7 @@ class ControlUnit:
                 if not (self.flags[Flags.NF]):
                     arg = (
                         self.registers[instr[ip].first]
-                        if instr[ip].first in Register
+                        if instr[ip].first in registers_name
                         else int(instr[ip].first)
                     )
                     ip = int(arg)
@@ -338,7 +347,7 @@ class ControlUnit:
                 if not (self.flags[Flags.NF]) and not (self.flags[Flags.ZF]):
                     arg = (
                         self.registers[instr[ip].first]
-                        if instr[ip].first in Register
+                        if instr[ip].first in registers_name
                         else int(instr[ip].first)
                     )
                     ip = int(arg)
@@ -347,7 +356,7 @@ class ControlUnit:
                 if self.flags[Flags.ZF]:
                     arg = (
                         self.registers[instr[ip].first]
-                        if instr[ip].first in Register
+                        if instr[ip].first in registers_name
                         else int(instr[ip].first)
                     )
                     ip = int(arg)
@@ -365,7 +374,7 @@ class ControlUnit:
                 if not (self.flags[Flags.NF]) or self.flags[Flags.ZF]:
                     arg = (
                         self.registers[instr[ip].first]
-                        if instr[ip].first in Register
+                        if instr[ip].first in registers_name
                         else int(instr[ip].first)
                     )
                     ip = int(arg)
@@ -374,7 +383,7 @@ class ControlUnit:
                 if self.flags[Flags.NF]:
                     arg = (
                         self.registers[instr[ip].first]
-                        if instr[ip].first in Register
+                        if instr[ip].first in registers_name
                         else int(instr[ip].first)
                     )
                     ip = int(arg)
