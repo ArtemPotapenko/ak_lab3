@@ -279,6 +279,8 @@ def translate(source: str) -> list[Instruction]:
     code_list: list[str] = [x.strip() for x in source.strip().split(";")]
     var_start, for_start = 0, 0
     search = ""
+    while_start = 0
+    jmp_code = 0
     count_skob = 0
     for_max = 0
     rec_code: str = ""
@@ -445,7 +447,6 @@ def translate(source: str) -> list[Instruction]:
                 if b[1].strip()[0] == "{":
                     count_skob = code_str.count("{")
                     b[1] = b[1].strip()[1:]
-                var_start = variables[args[0]]
                 rec_code = b[1] + ";"
         elif code_str[:6] == "string":
             if code_str[6] == " ":

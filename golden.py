@@ -1,12 +1,12 @@
 import contextlib
 import io
-import logging
 import os
 import tempfile
 
 import pytest
 
-import translator, machine
+import translator
+import machine
 
 
 @pytest.mark.golden_test("golden/*.yml")

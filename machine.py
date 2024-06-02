@@ -1,6 +1,6 @@
 import sys
 
-from isa import *
+from isa import Register, Flags, Opcode, Instruction, Union, is_number, read_code
 
 memory = []
 
@@ -146,8 +146,8 @@ class ControlUnit:
             if instr[ip].op == Opcode.CMP:
                 first = self.registers[instr[ip].first] if instr[ip].first in Register else instr[ip].first
                 second = self.registers[instr[ip].second] if instr[ip].second in Register else instr[ip].second
-                first = ord(first) if type(first) == str else first
-                second = ord(second) if type(second) == str else second
+                first = ord(first) if isinstance(first, str) else first
+                second = ord(second) if isinstance(second, str) else second
                 self.set_flag(first - second)
 
                 self.tick()
@@ -198,7 +198,7 @@ class ControlUnit:
             if instr[ip].op == Opcode.PRINT:
                 arg = self.registers[instr[ip].first] if instr[ip].first in Register else instr[ip].first if is_number(
                     instr[ip].first) else instr[ip].first
-                if type(arg) == int:
+                if isinstance(arg, int):
                     print(chr(arg), end='')
                 else:
                     print(arg, end='')
