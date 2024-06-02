@@ -12,12 +12,16 @@ def is_number(arg: str) -> bool:
 
 
 def is_char(arg: str) -> bool:
-    return isinstance(arg, str) and len(arg) == 3 and (arg[0] == "'" or arg[0] == "\"") and (
-            arg[2] == "'" or arg[2] == "\"")
+    return (
+        isinstance(arg, str)
+        and len(arg) == 3
+        and (arg[0] == "'" or arg[0] == '"')
+        and (arg[2] == "'" or arg[2] == '"')
+    )
 
 
 def is_register(arg: str) -> bool:
-    return len(arg) == 2 and arg[0] == 'r' and arg[1] in "123456"
+    return len(arg) == 2 and arg[0] == "r" and arg[1] in "123456"
 
 
 class Register(str, Enum):
@@ -91,8 +95,14 @@ instr_agr = Union[chr, str, int, Register, None]
 class Instruction:
     memory = None
 
-    def __init__(self, op: Opcode, memory, first: instr_agr = None, second: instr_agr = None,
-                 third: instr_agr = None):
+    def __init__(
+        self,
+        op: Opcode,
+        memory,
+        first: instr_agr = None,
+        second: instr_agr = None,
+        third: instr_agr = None,
+    ):
         self.op = op
         self.first = first
         self.second = second
@@ -100,13 +110,27 @@ class Instruction:
         self.memory = memory
 
     def __str__(self):
-        return str(self.op) + " " + str(self.first) + " " + str(self.second) + " " + str(self.third) + " " + str(
-            self.memory)
+        return (
+            str(self.op)
+            + " "
+            + str(self.first)
+            + " "
+            + str(self.second)
+            + " "
+            + str(self.third)
+            + " "
+            + str(self.memory)
+        )
 
 
 def create_instr(json_dict: dict) -> Instruction:
-    return Instruction(Opcode(json_dict["opcode"]), int(json_dict["memory"]), set_from_json(json_dict["first"]),
-                       set_from_json(json_dict["second"]), set_from_json(json_dict["third"]))
+    return Instruction(
+        Opcode(json_dict["opcode"]),
+        int(json_dict["memory"]),
+        set_from_json(json_dict["first"]),
+        set_from_json(json_dict["second"]),
+        set_from_json(json_dict["third"]),
+    )
 
 
 def write_code(filename: str, code: list[Instruction]):
@@ -114,9 +138,17 @@ def write_code(filename: str, code: list[Instruction]):
         buf = []
 
         for instr in code:
-            buf.append(json.dumps(
-                {"memory": instr.memory, "opcode": instr.op, "first": instr.first, "second": instr.second,
-                 "third": instr.third}))
+            buf.append(
+                json.dumps(
+                    {
+                        "memory": instr.memory,
+                        "opcode": instr.op,
+                        "first": instr.first,
+                        "second": instr.second,
+                        "third": instr.third,
+                    }
+                )
+            )
         file.write("[" + ",\n ".join(buf) + "]")
 
 

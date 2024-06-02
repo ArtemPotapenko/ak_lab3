@@ -12,7 +12,13 @@ class ControlUnit:
         NF: bool
         ZF: bool
 
-        def __init__(self, tick_number: int, registers: dict[Register, Union[int, chr, int]], NF: bool, ZF: bool):
+        def __init__(
+            self,
+            tick_number: int,
+            registers: dict[Register, Union[int, chr, int]],
+            NF: bool,
+            ZF: bool,
+        ):
             self.tick_number = tick_number
             self.registers = registers
             self.NF = NF
@@ -45,7 +51,13 @@ class ControlUnit:
     def tick(self):
         self.tick_number += 1
         self.ticks.append(
-            self.Tick(self.tick_number, self.registers.copy(), self.flags[Flags.NF], self.flags[Flags.ZF]))
+            self.Tick(
+                self.tick_number,
+                self.registers.copy(),
+                self.flags[Flags.NF],
+                self.flags[Flags.ZF],
+            )
+        )
 
     def set_flag(self, result: int):
         self.flags[Flags.NF] = result < 0
@@ -69,8 +81,16 @@ class ControlUnit:
                 return
 
             if instr[ip].op == Opcode.ADD:
-                first = self.registers[instr[ip].first] if instr[ip].first in Register else instr[ip].first
-                second = self.registers[instr[ip].second] if instr[ip].second in Register else instr[ip].second
+                first = (
+                    self.registers[instr[ip].first]
+                    if instr[ip].first in Register
+                    else instr[ip].first
+                )
+                second = (
+                    self.registers[instr[ip].second]
+                    if instr[ip].second in Register
+                    else instr[ip].second
+                )
                 self.registers[instr[ip].third] = first + second
 
                 self.tick()
@@ -84,8 +104,16 @@ class ControlUnit:
                     return
 
             if instr[ip].op == Opcode.SUB:
-                first = self.registers[instr[ip].first] if instr[ip].first in Register else instr[ip].first
-                second = self.registers[instr[ip].second] if instr[ip].second in Register else instr[ip].second
+                first = (
+                    self.registers[instr[ip].first]
+                    if instr[ip].first in Register
+                    else instr[ip].first
+                )
+                second = (
+                    self.registers[instr[ip].second]
+                    if instr[ip].second in Register
+                    else instr[ip].second
+                )
                 self.registers[instr[ip].third] = first - second
 
                 self.tick()
@@ -99,8 +127,16 @@ class ControlUnit:
                     return
 
             if instr[ip].op == Opcode.MUL:
-                first = self.registers[instr[ip].first] if instr[ip].first in Register else instr[ip].first
-                second = self.registers[instr[ip].second] if instr[ip].second in Register else instr[ip].second
+                first = (
+                    self.registers[instr[ip].first]
+                    if instr[ip].first in Register
+                    else instr[ip].first
+                )
+                second = (
+                    self.registers[instr[ip].second]
+                    if instr[ip].second in Register
+                    else instr[ip].second
+                )
                 self.registers[instr[ip].third] = first * second
 
                 self.tick()
@@ -114,8 +150,16 @@ class ControlUnit:
                     return
 
             if instr[ip].op == Opcode.DIV:
-                first = self.registers[instr[ip].first] if instr[ip].first in Register else instr[ip].first
-                second = self.registers[instr[ip].second] if instr[ip].second in Register else instr[ip].second
+                first = (
+                    self.registers[instr[ip].first]
+                    if instr[ip].first in Register
+                    else instr[ip].first
+                )
+                second = (
+                    self.registers[instr[ip].second]
+                    if instr[ip].second in Register
+                    else instr[ip].second
+                )
                 self.registers[instr[ip].third] = first // second
 
                 self.tick()
@@ -129,8 +173,16 @@ class ControlUnit:
                     return
 
             if instr[ip].op == Opcode.MOD:
-                first = self.registers[instr[ip].first] if instr[ip].first in Register else instr[ip].first
-                second = self.registers[instr[ip].second] if instr[ip].second in Register else instr[ip].second
+                first = (
+                    self.registers[instr[ip].first]
+                    if instr[ip].first in Register
+                    else instr[ip].first
+                )
+                second = (
+                    self.registers[instr[ip].second]
+                    if instr[ip].second in Register
+                    else instr[ip].second
+                )
                 self.registers[instr[ip].third] = first % second
 
                 self.tick()
@@ -144,8 +196,16 @@ class ControlUnit:
                     return
 
             if instr[ip].op == Opcode.CMP:
-                first = self.registers[instr[ip].first] if instr[ip].first in Register else instr[ip].first
-                second = self.registers[instr[ip].second] if instr[ip].second in Register else instr[ip].second
+                first = (
+                    self.registers[instr[ip].first]
+                    if instr[ip].first in Register
+                    else instr[ip].first
+                )
+                second = (
+                    self.registers[instr[ip].second]
+                    if instr[ip].second in Register
+                    else instr[ip].second
+                )
                 first = ord(first) if isinstance(first, str) else first
                 second = ord(second) if isinstance(second, str) else second
                 self.set_flag(first - second)
@@ -155,12 +215,14 @@ class ControlUnit:
                     return
 
             if instr[ip].op == Opcode.LD:
-
                 first = instr[ip].first
 
                 if not (is_number(instr[ip].first)):
-                    adr = int(self.registers[instr[ip].first]) if instr[ip].first in Register else int(
-                        instr[ip].first[1::])
+                    adr = (
+                        int(self.registers[instr[ip].first])
+                        if instr[ip].first in Register
+                        else int(instr[ip].first[1::])
+                    )
                     self.registers[Register.DR] = adr
 
                     self.tick()
@@ -176,9 +238,16 @@ class ControlUnit:
                     return
 
             if instr[ip].op == Opcode.ST:
-                first = self.registers[instr[ip].first] if instr[ip].first in Register else instr[ip].first
-                second = self.registers[instr[ip].second] if instr[ip].second in Register else int(
-                    instr[ip].second[1::])
+                first = (
+                    self.registers[instr[ip].first]
+                    if instr[ip].first in Register
+                    else instr[ip].first
+                )
+                second = (
+                    self.registers[instr[ip].second]
+                    if instr[ip].second in Register
+                    else int(instr[ip].second[1::])
+                )
                 self.registers[Register.DR] = second
 
                 self.tick()
@@ -192,21 +261,34 @@ class ControlUnit:
                     return
 
             if instr[ip].op == Opcode.JMP:
-                arg = self.registers[instr[ip].first] if instr[ip].first in Register else int(instr[ip].first)
+                arg = (
+                    self.registers[instr[ip].first]
+                    if instr[ip].first in Register
+                    else int(instr[ip].first)
+                )
                 ip = int(arg)
                 continue
             if instr[ip].op == Opcode.PRINT:
-                arg = self.registers[instr[ip].first] if instr[ip].first in Register else instr[ip].first if is_number(
-                    instr[ip].first) else instr[ip].first
+                arg = (
+                    self.registers[instr[ip].first]
+                    if instr[ip].first in Register
+                    else instr[ip].first
+                    if is_number(instr[ip].first)
+                    else instr[ip].first
+                )
                 if isinstance(arg, int):
-                    print(chr(arg), end='')
+                    print(chr(arg), end="")
                 else:
-                    print(arg, end='')
+                    print(arg, end="")
                 self.tick()
                 if self.tick == self.max_tick:
                     return
             if instr[ip].op == Opcode.PUSH:
-                first = self.registers[instr[ip].first] if instr[ip].first in Register else instr[ip].first
+                first = (
+                    self.registers[instr[ip].first]
+                    if instr[ip].first in Register
+                    else instr[ip].first
+                )
                 self.registers[Register.DR] = self.registers[Register.SP]
 
                 self.tick()
@@ -225,7 +307,6 @@ class ControlUnit:
                 if self.tick == self.max_tick:
                     return
             if instr[ip].op == Opcode.POP:
-
                 self.registers[Register.SP] += 1
 
                 self.tick()
@@ -246,32 +327,56 @@ class ControlUnit:
 
             if instr[ip].op == Opcode.JNL:
                 if not (self.flags[Flags.NF]):
-                    arg = self.registers[instr[ip].first] if instr[ip].first in Register else int(instr[ip].first)
+                    arg = (
+                        self.registers[instr[ip].first]
+                        if instr[ip].first in Register
+                        else int(instr[ip].first)
+                    )
                     ip = int(arg)
                     continue
             if instr[ip].op == Opcode.JG:
                 if not (self.flags[Flags.NF]) and not (self.flags[Flags.ZF]):
-                    arg = self.registers[instr[ip].first] if instr[ip].first in Register else int(instr[ip].first)
+                    arg = (
+                        self.registers[instr[ip].first]
+                        if instr[ip].first in Register
+                        else int(instr[ip].first)
+                    )
                     ip = int(arg)
                     continue
             if instr[ip].op == Opcode.JE:
                 if self.flags[Flags.ZF]:
-                    arg = self.registers[instr[ip].first] if instr[ip].first in Register else int(instr[ip].first)
+                    arg = (
+                        self.registers[instr[ip].first]
+                        if instr[ip].first in Register
+                        else int(instr[ip].first)
+                    )
                     ip = int(arg)
                     continue
             if instr[ip].op == Opcode.JNE:
                 if not (self.flags[Flags.ZF]):
-                    arg = self.registers[instr[ip].first] if instr[ip].first in Register else int(instr[ip].first)
+                    arg = (
+                        self.registers[instr[ip].first]
+                        if instr[ip].first in Register
+                        else int(instr[ip].first)
+                    )
                     ip = int(arg)
                     continue
             if instr[ip].op == Opcode.JNG:
                 if not (self.flags[Flags.NF]) or self.flags[Flags.ZF]:
-                    arg = self.registers[instr[ip].first] if instr[ip].first in Register else int(instr[ip].first)
+                    arg = (
+                        self.registers[instr[ip].first]
+                        if instr[ip].first in Register
+                        else int(instr[ip].first)
+                    )
                     ip = int(arg)
                     continue
             if instr[ip].op == Opcode.JL:
                 if self.flags[Flags.NF]:
-                    arg = self.registers[instr[ip].first] if instr[ip].first in Register else int(instr[ip].first)
+                    arg = (
+                        self.registers[instr[ip].first]
+                        if instr[ip].first in Register
+                        else int(instr[ip].first)
+                    )
                     ip = int(arg)
                     continue
             if instr[ip].op == Opcode.READ:
@@ -283,7 +388,6 @@ class ControlUnit:
                     return
 
             if instr[ip].op == Opcode.HLT:
-
                 self.tick()
                 if self.tick == self.max_tick:
                     return
@@ -328,16 +432,24 @@ def main(source, ticks_file, input_file):
         s = file.read()
         for i in range(len(s)):
             cu.input_list.append(s[i])
-        cu.input_list.append('\0')
+        cu.input_list.append("\0")
     cu.parse(memory)
     with open(ticks_file, "w") as file:
         for x in cu.ticks:
             file.write(str(x) + "\n")
         file.write("\n")
         file.write("\n")
-        file.write("ticks: " + str(cu.tick_number) + "\n" + "instructions: " + str(cu.instruction_count))
+        file.write(
+            "ticks: "
+            + str(cu.tick_number)
+            + "\n"
+            + "instructions: "
+            + str(cu.instruction_count)
+        )
 
 
 if __name__ == "__main__":
-    assert len(sys.argv) == 4, "Wrong arguments: machine.py <input_file> <target_file> <input>"
+    assert (
+        len(sys.argv) == 4
+    ), "Wrong arguments: machine.py <input_file> <target_file> <input>"
     main(sys.argv[1], sys.argv[2], sys.argv[3])
