@@ -2,7 +2,7 @@ in_source: |-
   string name = read(20);
   print("Hello, ");
   print(name);
-in_input:
+in_input: |-
 out_output: Hello, world!!
 out_code: |-
   [{"memory": 4096, "opcode": "print", "first": "H", "second": null, "third": null},
