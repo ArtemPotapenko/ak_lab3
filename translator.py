@@ -673,7 +673,7 @@ def translate(source: str) -> list[Instruction]:
                 if var in variables:
                     if variables[var].type_value == Type.number:
                         arithmetic(val)
-                        if not (last_result in Register):
+                        if last_result not in Register:
                             code.append(
                                 Instruction(
                                     Opcode.LD,
