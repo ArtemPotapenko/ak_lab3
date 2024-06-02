@@ -362,7 +362,7 @@ def translate(source: str) -> list[Instruction]:
 
     source = source.replace("\n", "")
     code_list: list[str] = [x.strip() for x in source.strip().split(";")]
-    var_start, for_start = 0, 0
+    for_start = 0
     search = ""
     while_start = 0
     jmp_code = 0
