@@ -36,11 +36,11 @@ class ControlUnit:
         tick_number: int
 
         def __init__(
-                self,
-                tick_number: int,
-                registers: dict[Register, Union[int, chr, int]],
-                NF: bool,
-                ZF: bool,
+            self,
+            tick_number: int,
+            registers: dict[Register, Union[int, chr, int]],
+            NF: bool,
+            ZF: bool,
         ):
             self.tick_number = tick_number
             self.registers = registers
@@ -334,7 +334,9 @@ class ControlUnit:
                 if self.tick == self.max_tick:
                     return
 
-                self.data.registers[instr[ip].first] = self.data.memory[self.data.registers[Register.DR]]
+                self.data.registers[instr[ip].first] = self.data.memory[
+                    self.data.registers[Register.DR]
+                ]
 
                 self.tick()
                 if self.tick == self.max_tick:
@@ -409,23 +411,31 @@ class ControlUnit:
 
                 break
             if instr[ip].op == Opcode.INC:
-                self.data.registers[Register.DR] = self.data.memory[int(instr[ip].first[1::])]
+                self.data.registers[Register.DR] = self.data.memory[
+                    int(instr[ip].first[1::])
+                ]
                 self.tick()
                 if self.tick == self.max_tick:
                     return
 
-                self.data.registers[Register.R1] = self.data.memory[int(instr[ip].first[1::])]
+                self.data.registers[Register.R1] = self.data.memory[
+                    int(instr[ip].first[1::])
+                ]
                 self.tick()
                 if self.tick == self.max_tick:
                     return
 
-                self.data.registers[Register.R1] = self.data.memory[int(instr[ip].first[1::])] + 1
+                self.data.registers[Register.R1] = (
+                    self.data.memory[int(instr[ip].first[1::])] + 1
+                )
 
                 self.tick()
                 if self.tick == self.max_tick:
                     return
 
-                self.data.memory[int(instr[ip].first[1::])] = self.data.registers[Register.R1]
+                self.data.memory[int(instr[ip].first[1::])] = self.data.registers[
+                    Register.R1
+                ]
                 self.tick()
                 if self.tick == self.max_tick:
                     return
@@ -465,6 +475,6 @@ def main(source, ticks_file, input_file):
 
 if __name__ == "__main__":
     assert (
-            len(sys.argv) == 4
+        len(sys.argv) == 4
     ), "Wrong arguments: machine.py <input_file> <target_file> <input>"
     main(sys.argv[1], sys.argv[2], sys.argv[3])
