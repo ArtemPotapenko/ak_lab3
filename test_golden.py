@@ -29,3 +29,4 @@ def test_whole_by_golden(golden):
             code = file.read()
         assert code == golden.out["out_code"]
         assert stdout.getvalue() == str(golden.out["out_output"])
+        os.remove(tmpdirname)
