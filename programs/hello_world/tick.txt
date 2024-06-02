@@ -1,0 +1,49 @@
+<tick_number: 1;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4096;cr: 0;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 2;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4096;cr: print H None None 4096;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 3;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4096;cr: print H None None 4096;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 4;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4097;cr: print H None None 4096;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 5;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4097;cr: print e None None 4097;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 6;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4097;cr: print e None None 4097;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 7;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4098;cr: print e None None 4097;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 8;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4098;cr: print l None None 4098;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 9;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4098;cr: print l None None 4098;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 10;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4099;cr: print l None None 4098;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 11;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4099;cr: print l None None 4099;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 12;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4099;cr: print l None None 4099;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 13;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4100;cr: print l None None 4099;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 14;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4100;cr: print o None None 4100;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 15;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4100;cr: print o None None 4100;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 16;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4101;cr: print o None None 4100;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 17;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4101;cr: print , None None 4101;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 18;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4101;cr: print , None None 4101;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 19;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4102;cr: print , None None 4101;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 20;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4102;cr: print   None None 4102;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 21;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4102;cr: print   None None 4102;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 22;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4103;cr: print   None None 4102;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 23;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4103;cr: print w None None 4103;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 24;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4103;cr: print w None None 4103;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 25;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4104;cr: print w None None 4103;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 26;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4104;cr: print o None None 4104;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 27;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4104;cr: print o None None 4104;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 28;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4105;cr: print o None None 4104;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 29;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4105;cr: print r None None 4105;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 30;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4105;cr: print r None None 4105;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 31;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4106;cr: print r None None 4105;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 32;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4106;cr: print l None None 4106;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 33;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4106;cr: print l None None 4106;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 34;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4107;cr: print l None None 4106;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 35;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4107;cr: print d None None 4107;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 36;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4107;cr: print d None None 4107;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 37;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4108;cr: print d None None 4107;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 38;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4108;cr: print ! None None 4108;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 39;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4108;cr: print ! None None 4108;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 40;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4109;cr: print ! None None 4108;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 41;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4109;cr: print ! None None 4109;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 42;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4109;cr: print ! None None 4109;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 43;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4110;cr: print ! None None 4109;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 44;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4110;cr: hlt None None None 4110;dr: 0;sp: 8191;NF: False;ZF: False>
+<tick_number: 45;r1: 0;r2: 0;r3: 0;r4: 0;r5: 0;r6: 0;bx: 0;cx: 0;dx: 0;ip: 4110;cr: hlt None None None 4110;dr: 0;sp: 8191;NF: False;ZF: False>
+
+
+ticks: 45
+instructions: 15
