@@ -760,7 +760,6 @@ def main(source: str, target: str):
     for x in variable_const:
         code.append(Instruction(Opcode.WORD, x, variable_const[x]))
     write_code(target, code)
-    print("source LoC:", len(source.split(";")), "code instr:", len(code))
 
 
 if __name__ == "__main__":
