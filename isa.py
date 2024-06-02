@@ -5,14 +5,15 @@ from typing import Union
 
 def is_number(arg: str) -> bool:
     try:
-        float(arg)
+        int(arg)
         return True
     except ValueError:
         return False
 
 
 def is_char(arg: str) -> bool:
-    return len(arg) == 3 and arg[0] == "'" and arg[2] == "'"
+    return type(arg) == str and len(arg) == 3 and (arg[0] == "'" or arg[0] == "\"") and (
+                arg[2] == "'" or arg[2] == "\"")
 
 
 def is_register(arg: str) -> bool:
@@ -35,6 +36,7 @@ class Register(str, Enum):
     IP = "ip"
     CR = "cr"
     DR = "dr"
+    SP = "sp"
 
 
 class Flags(str, Enum):
@@ -69,6 +71,11 @@ class Opcode(str, Enum):
     LD = "ld"
     ST = "st"
     WORD = "word"
+
+    # stack
+
+    PUSH = "push"
+    POP = "pop"
 
     HLT = "hlt"
     NOPE = "nope"
@@ -116,18 +123,18 @@ def write_code(filename: str, code: list[Instruction]):
 def set_from_json(json_string: str | None):
     if json_string is None:
         return None
-    if is_number(json_string):
-        return float(json_string)
-    if is_register(json_string):
-        return Register(json_string)
     if is_char(json_string):
         return json_string[1]
+    if is_number(json_string):
+        return int(json_string)
+    if is_register(json_string):
+        return Register(json_string)
     return json_string
 
 
 def read_code(filename: str) -> list[Instruction]:
     with open(filename, encoding="utf-8") as file:
-        json_list = json.loads(file.read())
+        json_list = json.loads(file.read().replace("\\n", "\n"))
     code: list[Instruction] = []
     for json_instr in json_list:
         code.append(create_instr(json_instr))

@@ -3,7 +3,7 @@ import sys
 from enum import Enum
 from typing import Union
 
-from isa import write_code, Instruction, Register, Opcode, is_number
+from isa import write_code, Instruction, Register, Opcode, is_number, is_char
 
 
 class Type(str, Enum):
@@ -66,7 +66,7 @@ def to_register(s: str, number: int) -> Union[Register, str]:
     global current_variable_address, current_code_address, code
     if s[0] == "#":
         register = Register.BX if number == 1 else Register.CX if number == 2 else Register.DX
-        code.append(Instruction(Opcode.LD, current_code_address,s, register))
+        code.append(Instruction(Opcode.LD, current_code_address, s, register))
         current_code_address += 1
         return register
     elif is_number(s[0]):
@@ -162,7 +162,8 @@ def arithmetic(arith_str: str):
         last_result = mem_to
     elif arith_str in variables:
         code.append(Instruction(Opcode.LD, current_code_address, "#" + str(variables[arith_str].value), Register.R1))
-        last_result = Register.R1
+        last_result = free_registers[-1]
+        free_registers.pop()
         current_code_address += 1
     return code
 
@@ -172,13 +173,21 @@ def string(s: str) -> list[Instruction]:
     if s.startswith("read(") and s[-1] == ")":
         k: int = int(s.split("(", 1)[1].split(")", 1)[0])
         last_result = current_variable_address
-        for i in range(k):
-            code.append(Instruction(Opcode.READ, current_code_address, Register.R1))
-            current_code_address += 1
-            code.append(Instruction(Opcode.ST, current_code_address, Register.R1, "#" + str(current_variable_address)))
-            current_code_address += 1
-            current_variable_address += 1
-        code.append(Instruction(Opcode.ST, current_code_address, '\0', "#" + str(current_variable_address)))
+        code.append(Instruction(Opcode.LD, current_code_address,  current_variable_address, Register.DX))
+        current_code_address += 1
+        code.append(Instruction(Opcode.READ, current_code_address, Register.R1))
+        current_code_address += 1
+        code.append(Instruction(Opcode.ST, current_code_address, Register.R1, Register.DX))
+        current_code_address += 1
+        code.append(Instruction(Opcode.CMP, current_code_address, Register.R1, 0))
+        current_code_address += 1
+        code.append(Instruction(Opcode.JE, current_code_address, current_code_address + 3))
+        current_code_address += 1
+        code.append(Instruction(Opcode.ADD, current_code_address, Register.DX, 1, Register.DX))
+        current_code_address += 1
+        code.append(Instruction(Opcode.JMP, current_code_address, current_code_address - 5))
+        current_code_address += 1
+        current_variable_address += k
         current_code_address += 1
         current_variable_address += 1
     if s[0] == "\"" and s[-1] == "\"":
@@ -192,6 +201,7 @@ def string(s: str) -> list[Instruction]:
 
 
 def get_log_opcode(s: str) -> Opcode:
+    s = s.split(")")[0]
     if ">=" in s:
         return Opcode.JNL
     if "<=" in s:
@@ -208,7 +218,63 @@ def get_log_opcode(s: str) -> Opcode:
 
 
 def translate(source: str) -> list[Instruction]:
-    global current_variable_address, current_variable_address, current_code_address, jmp_code, code
+    global current_variable_address, current_variable_address, current_code_address, code, free_registers, last_result
+
+    def print_number():
+        global current_code_address, code, last_result
+        code.append(Instruction(Opcode.CMP, current_code_address, last_result, 0))
+        current_code_address += 1
+        code.append(Instruction(Opcode.JL, current_code_address, current_code_address + 11))
+        current_code_address += 1
+        code.append(Instruction(Opcode.JE, current_code_address, current_code_address + 5))
+        current_code_address += 1
+        code.append(Instruction(Opcode.MOD, current_code_address, last_result, 10, Register.BX))
+        current_code_address += 1
+        code.append(Instruction(Opcode.DIV, current_code_address, last_result, 10, last_result))
+        current_code_address += 1
+        code.append(Instruction(Opcode.PUSH, current_code_address, Register.BX))
+        current_code_address += 1
+        code.append(Instruction(Opcode.JMP, current_code_address, current_code_address - 4))
+        current_code_address += 1
+        code.append(Instruction(Opcode.CMP, current_code_address, Register.SP, 8191))
+        current_code_address += 1
+        code.append(Instruction(Opcode.JE, current_code_address, current_code_address + 18))
+        current_code_address += 1
+        code.append(Instruction(Opcode.POP, current_code_address, Register.R1))
+        current_code_address += 1
+        code.append(Instruction(Opcode.ADD, current_code_address, Register.R1, 48, Register.R1))
+        current_code_address += 1
+        code.append(Instruction(Opcode.PRINT, current_code_address, Register.R1))
+        current_code_address += 1
+        code.append(Instruction(Opcode.JMP, current_code_address, current_code_address - 5))
+        current_code_address += 1
+        code.append(Instruction(Opcode.MUL, current_code_address, last_result, -1, last_result))
+        current_code_address += 1
+        code.append(Instruction(Opcode.JE, current_code_address, current_code_address + 5))
+        current_code_address += 1
+        code.append(Instruction(Opcode.MOD, current_code_address, last_result, 10, Register.BX))
+        current_code_address += 1
+        code.append(Instruction(Opcode.DIV, current_code_address, last_result, 10, last_result))
+        current_code_address += 1
+        code.append(Instruction(Opcode.PUSH, current_code_address, Register.BX))
+        current_code_address += 1
+        code.append(Instruction(Opcode.JMP, current_code_address, current_code_address - 4))
+        current_code_address += 1
+        code.append(Instruction(Opcode.PRINT, current_code_address, '-'))
+        current_code_address += 1
+        code.append(Instruction(Opcode.CMP, current_code_address, Register.SP, 8191))
+        current_code_address += 1
+        code.append(Instruction(Opcode.JE, current_code_address, current_code_address + 5))
+        current_code_address += 1
+        code.append(Instruction(Opcode.POP, current_code_address, Register.R1))
+        current_code_address += 1
+        code.append(Instruction(Opcode.ADD, current_code_address, Register.R1, 48, Register.R1))
+        current_code_address += 1
+        code.append(Instruction(Opcode.PRINT, current_code_address, Register.R1))
+        current_code_address += 1
+        code.append(Instruction(Opcode.JMP, current_code_address, current_code_address - 5))
+        current_code_address += 1
+
     source = source.replace("\n", "")
     code_list: list[str] = [x.strip() for x in source.strip().split(";")]
     var_start, for_start = 0, 0
@@ -217,7 +283,26 @@ def translate(source: str) -> list[Instruction]:
     for_max = 0
     rec_code: str = ""
     for code_str in code_list:
+        free_registers = [Register.R6, Register.R5, Register.R4, Register.R3, Register.R2, Register.R1]
         code_str = code_str.strip()
+        if search == "while":
+            rec_code += code_str + ";"
+            if "}" in code_str:
+                count_skob -= code_str.count("}")
+                if count_skob == 0:
+                    rec_code = rec_code[:-2]
+                    translate(rec_code)
+                    code.append(Instruction(Opcode.JMP, current_code_address, while_start))
+                    current_code_address += 1
+                    code[jmp_code - START_CODE_ADDRESS].first = current_code_address
+
+            if "{" in code_str:
+                count_skob += code_str.count("{")
+            if count_skob == 0:
+                code_str = code_str.split("}", 1)[1].strip()
+                search = ""
+            else:
+                continue
         if search == "for":
             rec_code += code_str + ";"
             if "}" in code_str:
@@ -232,7 +317,7 @@ def translate(source: str) -> list[Instruction]:
                     code.append(Instruction(Opcode.JMP, current_code_address + 1, for_start - 1))
                     current_code_address += 2
                     code[for_start - START_CODE_ADDRESS + 1] = Instruction(Opcode.JNL, for_start + 1,
-                                                                       current_code_address)
+                                                                           current_code_address)
 
             if "{" in code_str:
                 count_skob += code_str.count("{")
@@ -260,24 +345,40 @@ def translate(source: str) -> list[Instruction]:
         if code_str[:6] == "print(":
             if '"' in code_str:
                 s = code_str.split('"', 2)[1]
-                code.append(
-                    Instruction(Opcode.LD, current_code_address, "#" + str(current_variable_address), Register.R1))
-                current_code_address += 1
                 for x in s:
-                    variable_const[current_variable_address] = x
-                    current_variable_address += 1
-                variable_const[current_variable_address] = '\0'
-                current_variable_address += 1
+                    x = int(x) + 48 if is_number(x) else x
+                    code.append(Instruction(Opcode.PRINT, current_code_address, x))
+                    current_code_address += 1
             elif code_str.split("(", 2)[1].split(")", 1)[0].strip() in variables:
                 var: Variable = variables[code_str.split("(", 2)[1].split(")", 1)[0].strip()]
                 if var.type_value == Type.number:
                     arithmetic(code_str[6:-1])
-                    code.append(Instruction(Opcode.PRINT, current_code_address, last_result))
+                    if last_result[0] == "#":
+                        last_result = Register.DX
+                    print_number()
+                if var.type_value == Type.char:
+                    code.append(Instruction(Opcode.LD, current_code_address, "#" + str(var.value), Register.DX))
+                    current_code_address += 1
+                    code.append(Instruction(Opcode.PRINT, current_code_address, Register.DX))
+                    current_code_address += 1
+                if var.type_value == Type.string:
+                    code.append(Instruction(Opcode.LD, current_code_address, "#" + str(var.value), Register.DX))
+                    current_code_address += 1
+                    code.append(Instruction(Opcode.LD, current_code_address, Register.DX, Register.BX))
+                    current_code_address += 1
+                    code.append(Instruction(Opcode.CMP, current_code_address, Register.BX, 0))
+                    current_code_address += 1
+                    code.append(Instruction(Opcode.JE, current_code_address, current_code_address + 4))
+                    current_code_address += 1
+                    code.append(Instruction(Opcode.PRINT, current_code_address, Register.BX))
+                    current_code_address += 1
+                    code.append(Instruction(Opcode.ADD, current_code_address, Register.DX, 1, Register.DX))
+                    current_code_address += 1
+                    code.append(Instruction(Opcode.JMP, current_code_address, current_code_address - 5))
                     current_code_address += 1
             else:
                 arithmetic(code_str[6:-1])
-                code.append(Instruction(Opcode.PRINT, current_code_address, last_result))
-                current_code_address += 1
+                print_number()
         elif code_str[:2] == "if":
             s = code_str.split("(", 1)[1].split(")", 1)[0]
             logic(s.strip())
@@ -290,18 +391,33 @@ def translate(source: str) -> list[Instruction]:
             count_skob = code_str.count("{")
             current_code_address += 1
             rec_code = code_str.split("{", 1)[1] + ";"
+        elif code_str.startswith("while"):
+            s = code_str.split("(", 1)[1].split(")", 1)[0]
+            while_start = current_code_address
+            logic(s.strip())
+            code.append(
+                Instruction(get_log_opcode(code_str), current_code_address, current_code_address + 2))
+            current_code_address += 1
+            jmp_code = current_code_address
+            search = "while"
+            code.append(Instruction(Opcode.JMP, current_code_address, None))
+            count_skob = code_str.count("{")
+            current_code_address += 1
+            rec_code = code_str.split("{", 1)[1] + ";"
         elif code_str[:6] == "number":
             if code_str[6] == " ":
                 s = code_str[7:].strip()
                 arr = [x.strip() for x in s.split("=")]
                 arithmetic(arr[1])
-                code.append(
-                    Instruction(Opcode.ST, current_code_address, last_result, "#" + str(current_variable_address)))
-                current_code_address += 1
-                if last_result is Register:
-                    free_registers.append(last_result)
-                variables[arr[0]] = Variable(current_variable_address, Type.number)
-                current_variable_address += 1
+                if last_result in Register:
+                    code.append(
+                        Instruction(Opcode.ST, current_code_address, last_result, "#" + str(current_variable_address)))
+                    current_code_address += 1
+                    variables[arr[0]] = Variable(current_variable_address, Type.number)
+                    current_variable_address += 1
+                else:
+                    variables[arr[0]] = Variable(int(last_result[1:]), Type.number)
+
             else:
                 raise "Compile Exception"
         elif code_str[:3] == "for":
@@ -346,13 +462,21 @@ def translate(source: str) -> list[Instruction]:
             if code_str[4] == " ":
                 s = [x.strip() for x in code_str[5:].split("=")]
                 if len(s) == 2:
-                    if s[1][0] == "'" and s[1][2] == "'":
+                    if is_char(s[1]):
                         code.append(
-                            Instruction(Opcode.ST, current_code_address, s[1], "#" + str(current_variable_address)))
+                            Instruction(Opcode.ST, current_code_address, s[1][1], "#" + str(current_variable_address)))
                         variables[s[0]] = Variable(current_variable_address, Type.char)
                         current_variable_address += 1
                         current_code_address += 1
                         ok = True
+                if "read()" in s[1]:
+                    ok = True
+                    code.append(Instruction(Opcode.READ, current_code_address, Register.R1))
+                    current_code_address += 1
+                    code.append(
+                        Instruction(Opcode.ST, current_code_address, Register.R1, "#" + str(current_variable_address)))
+                    current_code_address += 1
+                    variables[s[0]] = Variable(current_variable_address, Type.char)
             assert ok, "Compile exception"
         elif code_str.strip() == "new_line()":
             code.append(Instruction(Opcode.PRINT, current_code_address, '\n'))
@@ -363,6 +487,10 @@ def translate(source: str) -> list[Instruction]:
                 if var in variables:
                     if variables[var].type_value == Type.number:
                         arithmetic(val)
+                        if not (last_result in Register):
+                            code.append(Instruction(Opcode.LD, current_code_address, last_result, Register.DX))
+                            current_code_address += 1
+                            last_result = Register.DX
                         code.append(
                             Instruction(Opcode.ST, current_code_address, last_result, "#" + str(variables[var].value)))
                         current_variable_address += 1
@@ -377,6 +505,27 @@ def translate(source: str) -> list[Instruction]:
                             current_variable_address += 1
                         variable_const[current_variable_address] = '\0'
                         current_variable_address += 2
+                    if variables[var].type_value == Type.char:
+                        s = [var, val]
+                        if len(s) == 2:
+                            if is_char(s[1]):
+                                code.append(
+                                    Instruction(Opcode.ST, current_code_address, s[1][1],
+                                                "#" + str(current_variable_address)))
+                                variables[s[0]] = Variable(current_variable_address, Type.char)
+                                current_variable_address += 1
+                                current_code_address += 1
+                                ok = True
+                        if "read()" in s[1]:
+                            ok = True
+                            code.append(Instruction(Opcode.READ, current_code_address, Register.R1))
+                            current_code_address += 1
+                            code.append(
+                                Instruction(Opcode.ST, current_code_address, Register.R1,
+                                            "#" + str(current_variable_address)))
+                            current_code_address += 1
+                            variables[s[0]] = Variable(current_variable_address, Type.char)
+
     return code
 
 
