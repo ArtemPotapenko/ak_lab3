@@ -44,6 +44,25 @@ ar_var: dict = {}
 code = []
 
 
+def set_start_value():
+    global free_registers, variables, variable_const, last_result, ar_var, code, current_variable_address, current_code_address
+    free_registers = [
+        Register.R6,
+        Register.R5,
+        Register.R4,
+        Register.R3,
+        Register.R2,
+        Register.R1
+    ]
+    variable_const= {}
+    last_result = None
+    ar_var= {}
+    code = []
+    current_variable_address = START_VARIABLE_ADDRESS
+    current_code_address = START_CODE_ADDRESS
+    variables = {}
+
+
 def add_code(split_arr: list, op: Opcode) -> Union[Register, str]:
     global current_variable_address, current_code_address, last_result, code
     if split_arr[0][0] == "r":
@@ -131,18 +150,18 @@ def arithmetic(arith_str: str):
         elif arith_str[i] == ")":
             count_s -= 1
             if count_s == 0:
-                arithmetic(arith_str[start + 1 : i])
-                arith_str = arith_str[:start] + last_result + arith_str[i + 1 :]
+                arithmetic(arith_str[start + 1: i])
+                arith_str = arith_str[:start] + last_result + arith_str[i + 1:]
                 i = start
                 start = -1
         i += 1
     while (
-        len(re.findall("[#r]?[0-9\\w.]+\\s*[*/+\\-%]\\s*[#r]?[0-9\\w.]+", arith_str))
-        > 0
+            len(re.findall("[#r]?[0-9\\w.]+\\s*[*/+\\-%]\\s*[#r]?[0-9\\w.]+", arith_str))
+            > 0
     ):
         if (
-            len(re.findall("[#r]?[0-9\\w.]+\\s*[*/%]\\s*[#r]?[0-9\\w.]+", arith_str))
-            > 0
+                len(re.findall("[#r]?[0-9\\w.]+\\s*[*/%]\\s*[#r]?[0-9\\w.]+", arith_str))
+                > 0
         ):
             arr = re.findall("[#r-]?[0-9\\w.]+\\s*[*/%]\\s*[#r]?[0-9\\w.]+", arith_str)[
                 0
@@ -753,6 +772,7 @@ def translate(source: str) -> list[Instruction]:
 
 
 def main(source: str, target: str):
+    set_start_value()
     with open(source, encoding="utf-8") as f:
         source = f.read()
     translate(source)
@@ -764,6 +784,6 @@ def main(source: str, target: str):
 
 if __name__ == "__main__":
     assert (
-        len(sys.argv) == 3
+            len(sys.argv) == 3
     ), "Wrong arguments: translator.py <input_file> <target_file>"
     main(sys.argv[1], sys.argv[2])

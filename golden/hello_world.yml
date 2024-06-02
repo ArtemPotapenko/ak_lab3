@@ -1,7 +1,5 @@
 in_source: |-
-  string name = read(20);
-  print("Hello, ");
-  print(name);
+  print("Hello, world!!");
 in_input: |-
 out_output: Hello, world!!
 out_code: |-

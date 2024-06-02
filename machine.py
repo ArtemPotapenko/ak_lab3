@@ -22,11 +22,11 @@ class ControlUnit:
         ZF: bool
 
         def __init__(
-            self,
-            tick_number: int,
-            registers: dict[Register, Union[int, chr, int]],
-            NF: bool,
-            ZF: bool,
+                self,
+                tick_number: int,
+                registers: dict[Register, Union[int, chr, int]],
+                NF: bool,
+                ZF: bool
         ):
             self.tick_number = tick_number
             self.registers = registers
@@ -53,6 +53,12 @@ class ControlUnit:
         for reg in Register:
             self.registers[Register(reg)] = 0
         self.registers[Register.SP] = 8191
+        self.memory = []
+        self.tick_number = 0
+        self.instruction_count = 0
+        self.ticks = []
+        self.start = 4096
+        self.input_list = []
 
     flags: dict[Flags, bool] = {Flags.NF: False, Flags.ZF: False}
     code: list[Instruction] = []
@@ -459,6 +465,6 @@ def main(source, ticks_file, input_file):
 
 if __name__ == "__main__":
     assert (
-        len(sys.argv) == 4
+            len(sys.argv) == 4
     ), "Wrong arguments: machine.py <input_file> <target_file> <input>"
     main(sys.argv[1], sys.argv[2], sys.argv[3])
