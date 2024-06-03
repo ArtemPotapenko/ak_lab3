@@ -2797,8 +2797,13 @@ print(sum);
 ### Аналитика
 
 ```
-|           Full name             | alg            | loc | bytes | instr | exec_instr | tick |                                            variant                                             |
-| Нигаматуллин Степан Русланович  | hello_world    | 1   | -     | 27    | 27         | 79   |     alg -> asm | acc | harv | hw | instr | struct | stream | mem | cstr | prob2 | cache        |
-| Нигаматуллин Степан Русланович  | greet_user     | 7   | -     | 73    | 131        | 403  |     alg -> asm | acc | harv | hw | instr | struct | stream | mem | cstr | prob2 | cache        |
-| Нигаматуллин Степан Русланович  | prob2          | 17  | -     | 200   | 1529       | 5074 |     alg -> asm | acc | harv | hw | instr | struct | stream | mem | cstr | prob2 | cache        |
+|           Full name        | alg            | loc | bytes | instr | exec_instr | tick |                                            variant                                              |
+|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Потапенко Артем Денисович  | prob2          | 7   | -     | 57    |  736       | 2508 |     alg -> asm | risc | neum | hw | tick -> instr | struct | stream | mem | cstr | prob2 | cache|
+| Потапенко Артем Денисович  | cat            | 3   | -     | 12    | 6362       | 19792|     alg -> asm | risc | neum | hw | tick -> instr | struct | stream | mem | cstr | prob2 | cache|
+| Потапенко Артем Денисович  | hello_world    | 1   | -     | 14    | 19         | 58   |     alg -> asm | risc | neum | hw | tick -> instr | struct | stream | mem | cstr | prob2 | cache|
+| Потапенко Артем Денисович  | hello_user     | 17  | -     | 15    | 45         | 5074 |     alg -> asm | risc | neum | hw | tick -> instr | struct | stream | mem | cstr | prob2 | cache|
+| Потапенко Артем Денисович  | cycles         | 3   | -     | 47    | 1029       | 3774 |     alg -> asm | risc | neum | hw | tick -> instr | struct | stream | mem | cstr | prob2 | cache|
+| Потапенко Артем Денисович  | arith          | 2   | -     |44     | 68         | 281 |     alg -> asm | risc | neum | hw | tick -> instr | struct | stream | mem | cstr | prob2 | cache|
+
 ```
