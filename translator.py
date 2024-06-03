@@ -3,7 +3,7 @@ import sys
 from enum import Enum
 from typing import Union
 
-from isa import write_code, Instruction, Register, Opcode, is_number, is_char
+from isa import write_code, Instruction, Register, Opcode, is_number, is_char, registers_name
 
 
 class Type(str, Enum):
@@ -124,7 +124,7 @@ def to_register(s: str, number: int) -> Union[Register, str]:
         )
         current_code_address += 1
         return register
-    if s in Register:
+    if s in registers_name:
         return Register(s)
 
 
