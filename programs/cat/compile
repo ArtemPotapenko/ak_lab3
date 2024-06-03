@@ -1,0 +1,13 @@
+[{"memory": 4096, "opcode": "read", "first": "r1", "second": null, "third": null},
+ {"memory": 4097, "opcode": "st", "first": "r1", "second": "#100", "third": null},
+ {"memory": 4098, "opcode": "ld", "first": "#100", "second": "r1", "third": null},
+ {"memory": 4099, "opcode": "ld", "first": "0", "second": "r2", "third": null},
+ {"memory": 4100, "opcode": "cmp", "first": "r1", "second": "r2", "third": null},
+ {"memory": 4101, "opcode": "jg", "first": 4103, "second": null, "third": null},
+ {"memory": 4102, "opcode": "jmp", "first": 4108, "second": null, "third": null},
+ {"memory": 4103, "opcode": "ld", "first": "#100", "second": "dx", "third": null},
+ {"memory": 4104, "opcode": "print", "first": "dx", "second": null, "third": null},
+ {"memory": 4105, "opcode": "read", "first": "r1", "second": null, "third": null},
+ {"memory": 4106, "opcode": "st", "first": "r1", "second": "#100", "third": null},
+ {"memory": 4107, "opcode": "jmp", "first": 4098, "second": null, "third": null},
+ {"memory": 4108, "opcode": "hlt", "first": null, "second": null, "third": null}]
