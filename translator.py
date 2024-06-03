@@ -3,7 +3,15 @@ import sys
 from enum import Enum
 from typing import Union
 
-from isa import write_code, Instruction, Register, Opcode, is_number, is_char, registers_name
+from isa import (
+    write_code,
+    Instruction,
+    Register,
+    Opcode,
+    is_number,
+    is_char,
+    registers_name,
+)
 
 
 class Type(str, Enum):
